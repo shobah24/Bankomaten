@@ -126,66 +126,83 @@
                     Console.WriteLine("överföring är inte möjligt pågrund av för lite konton! ");
                 }
 
-                //if (totalAccounts >= 2)
-                //{
-                int transferFromAccount = -1;
-                int transferToAccount = -1;
-                bool rightChoiceOfTransfers = false;
-                while (!rightChoiceOfTransfers)
+                if (totalAccounts >= 2) 
                 {
-                    Console.WriteLine("Välj vilket konto du vill överföra från: ");
-                    for (int i = 0; i < accountsBalance[userIn].Length; i++)
+                    int transferFromAccount = -1;
+                    int transferToAccount = -1;
+                    bool rightChoiceOfTransfers = false;
+                    while (!rightChoiceOfTransfers)
                     {
-                        Console.WriteLine($"{i + 1}. {accountsName[userIn][i]}: {accountsBalance[userIn][i]:C}");
-                    }
-                    //läsa användarens inmatning av konto den ska överföra från
-                    transferFromAccount = int.Parse(Console.ReadLine()) - 1; //-1 då arrayen börjar från 0 och inte 1
-                    if (transferFromAccount < 0 || transferFromAccount >= totalAccounts)
-                    {
-                        Console.WriteLine("Kontot finns inte");
-                        continue;
-                    }
+                        Console.WriteLine("Välj vilket konto du vill överföra från: ");
+                        for (int i = 0; i < accountsBalance[userIn].Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {accountsName[userIn][i]}: {accountsBalance[userIn][i]:C}");
+                        }
 
-                    Console.WriteLine("Välj vilket konto du vill överföra till: ");
-                    for (int i = 0; i < accountsBalance[userIn].Length; i++)
-                    {
-                        Console.WriteLine($"{i + 1}. {accountsName[userIn][i]}: {accountsBalance[userIn][i]:C}");
-                    }
-                    //läsa användarens inmatning av konto den ska överföra till
-                    transferToAccount = int.Parse(Console.ReadLine()) - 1;
-                    if (transferToAccount < 0 || transferToAccount >= totalAccounts)
-                    {
-                        Console.WriteLine("Kontot finns inte");
-                        continue;
-                    }
-                    if (transferFromAccount == transferToAccount)
-                    {
-                        Console.WriteLine("Det går tyvärr inte att flytta pengar från och till samma konto!");
-                    }
-                    rightChoiceOfTransfers = true;
-                }
-                Console.WriteLine("Hur mycket vill du överföra? ");
-                decimal amountToTransfer = decimal.Parse(Console.ReadLine());  // har decimal för att få rätt överföring.
+                        //läsa användarens inmatning av konto den ska överföra från
+                        string transferFrom = Console.ReadLine(); //-1 då arrayen börjar från 0 och inte 1
+                        if (int.TryParse(transferFrom, out transferFromAccount) && transferFromAccount > 0 && transferFromAccount <= totalAccounts)
+                        {
+                            transferFromAccount--; // väljer kontot som användaren ger men tar minus 1 då programmet räknar från 0
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kontot finns inte, vänligen ange ett konto som finns");
+                            continue;
+                        }
+               
+                        Console.WriteLine("Välj vilket konto du vill överföra till: ");
+                        for (int i = 0; i < accountsBalance[userIn].Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {accountsName[userIn][i]}: {accountsBalance[userIn][i]:C}");
+                        }
+                        //läsa användarens inmatning av konto den ska överföra till
+                        string transferTo = Console.ReadLine();
+                        if (int.TryParse(transferTo, out transferToAccount) && transferToAccount > 0 && transferToAccount <= totalAccounts)
+                        {
+                            transferToAccount--; // väljer kontot som användaren ger men tar minus 1 då programmet räknar från 0
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kontot finns inte, vänligen ange ett konto som finns");
+                            continue;
+                        }
 
-                if (amountToTransfer > 0 && amountToTransfer <= accountsBalance[userIn][transferFromAccount] && transferFromAccount != transferToAccount)
-                {
-                    accountsBalance[userIn][transferFromAccount] -= amountToTransfer;
-                    accountsBalance[userIn][transferToAccount] += amountToTransfer;
-                    Console.WriteLine($"Överföring från konto {transferFromAccount} till konto {transferToAccount} lyckades");
-                    Accounts(userIn, accountsName, accountsBalance);
+                        if (transferFromAccount == transferToAccount)
+                        {
+                            Console.WriteLine("Det går tyvärr inte att flytta pengar från och till samma konto!");
+                            continue;
+                        }
+                        rightChoiceOfTransfers = true;
+                    }
+                        Console.WriteLine("Hur mycket vill du överföra? ");
+                        string totalAmount = Console.ReadLine();  // har decimal för att få rätt överföring.
+                    if(decimal.TryParse(totalAmount,out decimal amountToTransfer))
+                    {
 
-                }
-                if (amountToTransfer > accountsBalance[userIn][transferFromAccount])
-                {
-                    Console.WriteLine("Du kan tyvärr inte överföra mer än det som finns på kontot");
 
-                }
-                else if (amountToTransfer < transferFromAccount || amountToTransfer > transferFromAccount)
-                {
-                    Console.WriteLine("Summan du angav finns tyvärr inte i kontot du vill överföra från! ");
+                        if (amountToTransfer > 0 && amountToTransfer <= accountsBalance[userIn][transferFromAccount] && transferFromAccount != transferToAccount)
+                        {
+                            accountsBalance[userIn][transferFromAccount] -= amountToTransfer;
+                            accountsBalance[userIn][transferToAccount] += amountToTransfer;
+                            Console.WriteLine($"Överföring från konto {accountsName[userIn][transferFromAccount]} till {accountsName[userIn][transferToAccount]} lyckades");
+                            Accounts(userIn, accountsName, accountsBalance);
+
+                        }
+                         else
+                            {
+                                Console.WriteLine("Summan du angav finns tyvärr inte i kontot du vill överföra från!");
+                                return;
+                            }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vänligen Ange ett riktigt belopp");
+                    }
                 }
 
             }
+            
         }
     }
 }
