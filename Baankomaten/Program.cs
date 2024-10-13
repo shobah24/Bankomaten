@@ -63,7 +63,7 @@ namespace Baankomaten
                 {
                     if (usernames[i] == username && passwords[i] == password)
                     {
-                        userIn = i;
+                        userIn = i; // användaren ger rätt inmatning
                         return true; // rätt inloggning
                     }
                 }
@@ -78,7 +78,7 @@ namespace Baankomaten
         {
             while (true) // loopar tills användaren gett rätt siffra 
             {   // menyn om vad användaren kan göra i bankomaten!
-                Console.WriteLine("Vad vill du göra?\n" +
+                Console.WriteLine("\nVad vill du göra?\n" +
                                   "1. Se dina konton och saldon\n" +
                                   "2. Överföring mellan konton\n" +
                                   "3. Ta ut pengar\n" +
@@ -110,7 +110,7 @@ namespace Baankomaten
                     Console.WriteLine("Ogiltigt val, försök igen!");
                 }
                 Console.WriteLine("Klicka på valfri tangent för att komma till huvudmenyn");
-                Console.ReadLine(); // bekräftelse att användaren vill återvända till huvudmenyn
+                Console.ReadKey(); // bekräftelse att användaren vill återvända till huvudmenyn
             }
         }
         //se konton och saldo
@@ -273,7 +273,7 @@ namespace Baankomaten
                     rightPin = true;
                     accountsBalance[userIn][withdrawFromAccount] -= amountToWithdraw; // tar ut pengar från kontot användaren gett
                     Console.WriteLine($"\nuttag från {accountsName[userIn][withdrawFromAccount]}t gick igenom");
-                    Console.WriteLine($"\nDitt saldo efter uttag: {accountsBalance[userIn][withdrawFromAccount]}"); //visar användarens konton och saldo
+                    Console.WriteLine($"Ditt saldo efter uttag: {accountsBalance[userIn][withdrawFromAccount]}"); //visar användarens konton och saldo
                 }
                 else
                 {
